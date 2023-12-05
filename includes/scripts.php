@@ -5,7 +5,7 @@
   document.getElementById("logoutBtn").addEventListener("click", function() {
     console.log("logout clicked");
 
-    // Make an asynchronous request to logout.php using fetch
+    // logout user
     fetch("logout.php")
       .then(response => {
         if (!response.ok) {
@@ -15,18 +15,16 @@
       })
       .then(data => {
         console.log(data);
-        window.location.href = "/php-todo-app/login.php";
         swal.fire({
           position: "center",
           title: "Successfully Logged Out",
           icon: "success",
           showConfirmButton: false,
           timer: 1500
-        })
-      })
-      .catch(error => {
-        console.error("Error during logout:", error);
+        }).then(function() {
+        location.reload();
       });
+      })
   });
 
   // update todo
@@ -82,7 +80,6 @@
               showConfirmButton: false,
               timer: 1500
             }).then(function() {
-              // Reload the page to refresh the table
               location.reload();
             });
           }
@@ -118,7 +115,6 @@
                 showConfirmButton: false,
                 timer: 1500
               }).then(function() {
-                // Reload the page to refresh the table
                 location.reload();
               });
             }
