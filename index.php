@@ -12,11 +12,10 @@ include("Class/function.php");
 $todo_app = new TodoApp();
 $all_todos = $todo_app->get_todo($user_id);
 if (isset($all_todos)) {
- // foreach ($all_todos as $to) {
- //  echo "<pre>";
- //  echo $to['todo'];
- //  echo "</pre>";
- // }
+ $todo_count = count($all_todos);
+ // echo "<pre>";
+ // echo $todo_count;
+ // echo "</pre>";
 }
 ?>
 
@@ -82,7 +81,7 @@ if (isset($all_todos)) {
        </td>
       </tr>
      <?php }
-    } else {  ?>
+    } if ( count($all_todos) === 0) {  ?>
      <!-- when no todo item available -->
      <tr class="border-2 border-gray-500 text-center text-blue-500 font-medium text-lg bg-gray-50">
       <td class="border-2 border-gray-500 text-center p-3" colspan="5">No Available Task</td>
@@ -95,17 +94,17 @@ if (isset($all_todos)) {
 
 
   <!-- add task -->
-<form action="" method="POST" class="space-y-6 min-w-[70%] p-10 rounded shadow-2xl" id="addTodoForm">
+  <form action="" method="POST" class="space-y-6 min-w-[70%] p-10 rounded shadow-2xl" id="addTodoForm">
    <h1 class="text-4xl text-center py-3">Add New Todo</h1>
    <div class="flex flex-col gap-2 w-full">
-      <label class="text-lg font-semibold text-blue-400">Create New Todo</label>
-      <textarea name="new_todo" class="py-2 px-1 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem] add-todo" cols="30" rows="3" required>
+    <label class="text-lg font-semibold text-blue-400">Create New Todo</label>
+    <textarea name="new_todo" class="py-2 px-1 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem] add-todo" cols="30" rows="3" required>
       </textarea>
    </div>
 
    <!-- add task button -->
    <input type="submit" name="add_todo" class="w-full py-2 px-3 rounded bg-blue-500 border-2 border-blue-200 text-white font-semibold text-[1.2rem] cursor-pointer hover:bg-blue-700 duration-300" value="ADD">
-</form>
+  </form>
 
  </div>
 

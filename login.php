@@ -51,6 +51,10 @@ if (isset($_POST['login'])) {
    <!-- login button -->
    <input type="submit" name="login" class="w-full py-2 px-3 rounded bg-blue-500 border-2 border-blue-200 text-white font-semibold text-[1.2rem] cursor-pointer hover:bg-blue-700 duration-300" value="Login">
 
+   <!-- navigate to sign up page -->
+   <p class="text-lg font-medium text-center">Don't Have an Account? <a href="/php-todo-app/sign_up.php" class="text-blue-500 underline">Create Account</a></p>
+
+
    <!-- show wrong credential error msg -->
    <?php if (isset($login_status) && $login_status !== true) {
     echo '<p class="text-red-500 font-medium text-lg text-center">Invalid Email or Password</p>';
@@ -66,10 +70,9 @@ if (isset($_POST['login'])) {
     icon: "success",
     showConfirmButton: false,
     timer: 1500
-   })
-   setTimeout(() => {
+   }).then(function() {
     window.location.href = "/php-todo-app";
-   }, 1200)
+  });
    ';
   } ?>
  </script>

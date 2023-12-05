@@ -66,6 +66,9 @@ if (isset($_POST['sign_up'])) {
    <!-- sign up button -->
    <input type="submit" name="sign_up" class="w-full py-2 px-3 rounded bg-blue-500 border-2 border-blue-200 text-white font-semibold text-[1.2rem] cursor-pointer hover:bg-blue-700 duration-300" value="Create Account">
 
+   <!-- navigate to login page -->
+   <p class="text-lg font-medium text-center">Already Have an Account? <a href="/php-todo-app/login.php" class="text-blue-500 underline">Login</a></p>
+
    <!-- show user exist status -->
    <?php if (isset($exist) && $exist === true) {
     echo '<p class="text-red-500 font-medium text-lg text-center">User Already Exist! </p>';
