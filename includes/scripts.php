@@ -82,12 +82,49 @@
               showConfirmButton: false,
               timer: 1500
             }).then(function() {
-            // Reload the page to refresh the table
-            location.reload();
-          });
+              // Reload the page to refresh the table
+              location.reload();
+            });
           }
         }
       });
+    });
+  });
+
+  // add new todo
+  $(document).ready(function() {
+    $('#addTodoForm').submit(function(e) {
+      e.preventDefault();
+      if (!e.target.new_todo.value) {
+        swal.fire({
+          position: "center",
+          title: "Please Add Some Text",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else {
+        $.ajax({
+          type: 'POST',
+          url: 'add_todo.php',
+          data: $(this).serialize(),
+          success: function(response) {
+            console.log('Add Todo status : ', response);
+            if (response) {
+              swal.fire({
+                position: "center",
+                title: "New Todo Added On List",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500
+              }).then(function() {
+                // Reload the page to refresh the table
+                location.reload();
+              });
+            }
+          }
+        });
+      }
     });
   });
 </script>

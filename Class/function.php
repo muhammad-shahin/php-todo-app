@@ -148,4 +148,24 @@ class TodoApp
    return false;
   }
  }
+ // delete todo
+ public function add_todo($user_id, $new_todo)
+ {
+  date_default_timezone_set('Asia/Dhaka');
+  $timestamp = strtotime('now');
+  $date = date('d M, Y', $timestamp);
+
+  // using prepared statements to prevent SQL injection
+  $query = "INSERT INTO todos (user_id, todo, date_created) VALUES (?, ?, ?)";
+
+  // method to prepare the statement
+  $stmt = mysqli_prepare($this->connection, $query);
+  mysqli_stmt_bind_param($stmt, "iss", $user_id, $new_todo, $date);
+
+  if (mysqli_stmt_execute($stmt)) {
+   return true;
+  } else {
+   return false;
+  }
+ }
 }

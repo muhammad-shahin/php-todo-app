@@ -95,23 +95,18 @@ if (isset($all_todos)) {
 
 
   <!-- add task -->
-  <form action="" method="POST" class="space-y-6 min-w-[450px] p-10 rounded shadow-2xl" id="signupForm">
+<form action="" method="POST" class="space-y-6 min-w-[70%] p-10 rounded shadow-2xl" id="addTodoForm">
    <h1 class="text-4xl text-center py-3">Add New Todo</h1>
    <div class="flex flex-col gap-2 w-full">
-    <label class="text-lg font-semibold text-blue-400">Create New Todo</label>
-    <textarea name="todo" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" cols="30" rows="3">
-
-    </textarea>
+      <label class="text-lg font-semibold text-blue-400">Create New Todo</label>
+      <textarea name="new_todo" class="py-2 px-1 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem] add-todo" cols="30" rows="3" required>
+      </textarea>
    </div>
 
    <!-- add task button -->
    <input type="submit" name="add_todo" class="w-full py-2 px-3 rounded bg-blue-500 border-2 border-blue-200 text-white font-semibold text-[1.2rem] cursor-pointer hover:bg-blue-700 duration-300" value="ADD">
+</form>
 
-   <!-- show user exist status -->
-   <?php if (isset($exist) && $exist === true) {
-    echo '<p class="text-red-500 font-medium text-lg text-center">User Already Exist! </p>';
-   } ?>
-  </form>
  </div>
 
 
@@ -119,31 +114,6 @@ if (isset($all_todos)) {
  <?php
  include_once("includes/scripts.php");
  ?>
- <!-- jquery -->
- <script src="https://code.jquery.com/jquery-3.6.4.min.js">
-  $(document).ready(function() {
-   $('.editable-todo').on('input', function() {
-    // Get the todo_id and updated content
-    var todoId = $(this).data('todo-id');
-    var updatedContent = $(this).text();
-    // Make an AJAX request to update_todo.php
-    $.ajax({
-     url: 'update_todo.php',
-     method: 'POST',
-     data: {
-      todo_id: todoId,
-      updated_content: updatedContent
-     },
-     success: function(response) {
-      console.log(response);
-     },
-     error: function(error) {
-      console.error('Error updating todo:', error);
-     }
-    });
-   });
-  });
- </script>
 
 </body>
 
