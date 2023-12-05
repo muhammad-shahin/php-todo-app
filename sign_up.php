@@ -1,3 +1,15 @@
+<?php
+include("Class/function.php");
+$todo_app = new TodoApp();
+if (isset($_POST['sign_up'])) {
+ $email = $_POST['user_email'];
+ $exist = $todo_app->is_exist($email);
+ // echo "<pre>";
+ // echo ($exist);
+ // echo "</pre>";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +38,7 @@
    <!-- Email -->
    <div class="flex flex-col gap-2 w-full">
     <label class="text-lg font-semibold text-blue-400">Email</label>
-    <input type="email" name="email" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Your Email Address" required>
+    <input type="email" name="user_email" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Your Email Address" required>
    </div>
 
    <!-- Password -->
@@ -43,20 +55,27 @@
 
    <!-- sign up button -->
    <input type="submit" name="sign_up" class="w-full py-2 px-3 rounded bg-blue-500 border-2 border-blue-200 text-white font-semibold text-[1.2rem] cursor-pointer hover:bg-blue-700 duration-300" value="Create Account">
+
+   <!-- show user exist status -->
+   <?php if (isset($exist) && $exist === true) {
+    echo '<p class="text-red-500 font-medium text-lg text-center">User Already Exist! </p>';
+   } elseif (isset($exist) && $exist !== true) {
+    echo '<p class="text-green-500 font-medium text-lg text-center">No User Found With This Email</p>';
+   }   ?>
   </form>
  </div>
  <?php include_once("includes/scripts.php") ?>
  <script>
   document.getElementById('signupForm').addEventListener('submit', function(event) {
-   event.preventDefault();
-
    const password = this.elements['Password'].value;
    const c_password = this.elements['c_Password'].value;
 
    if (password !== c_password) {
     swal("Password Not Matched!", "Please recheck your password", "warning");
+    event.preventDefault(); // Prevent form submission if passwords don't match
    } else {
-    this.submit();
+    // Form is valid, trigger a click on the submit button
+    document.getElementsByName('sign_up')[0].click();
    }
   });
  </script>
