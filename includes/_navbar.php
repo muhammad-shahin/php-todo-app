@@ -9,6 +9,12 @@
   <a href="sign_up.php">
    <li class="hover:text-gray-700 duration-300">Sign Up</li>
   </a>
+
  </ul>
- <button class="px-5 py-2 rounded text-blue-500 bg-white font-semibold text-lg hover:bg-gray-500 hover:text-white duration-300">Logout</button>
+ <?php
+ if (isset($_SESSION['user_id'])) {
+  echo '<button class="px-5 py-2 rounded text-blue-500 bg-white font-semibold text-lg hover:bg-gray-500 hover:text-white duration-300" id="logoutBtn">Logout</button>';
+ }
+ ?>
+
 </nav>

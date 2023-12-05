@@ -1,3 +1,21 @@
+<?php
+// if already logged in send user to home page
+session_start();
+if (isset($_SESSION['user_id'])) {
+ header("Location: index.php");
+ exit();
+}
+
+include("Class/function.php");
+$todo_app = new TodoApp();
+if (isset($_POST['login'])) {
+ $login_status = $todo_app->login($_POST);
+ // echo "<pre>";
+ // print_r($login_status);
+ // echo "</pre>";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,19 +39,40 @@
    <!-- Email -->
    <div class="flex flex-col gap-2 w-full">
     <label class="text-lg font-semibold text-blue-400">Email</label>
-    <input type="email" name="email" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Your Email Address">
+    <input type="email" name="user_email" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Your Email Address">
    </div>
 
    <!-- Password -->
    <div class="flex flex-col gap-2 w-full">
     <label class="text-lg font-semibold text-blue-400">Password</label>
-    <input type="text" name="Password" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Enter Password">
+    <input type="text" name="password" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Enter Password">
    </div>
 
    <!-- login button -->
    <input type="submit" name="login" class="w-full py-2 px-3 rounded bg-blue-500 border-2 border-blue-200 text-white font-semibold text-[1.2rem] cursor-pointer hover:bg-blue-700 duration-300" value="Login">
+
+   <!-- show wrong credential error msg -->
+   <?php if (isset($login_status) && $login_status !== true) {
+    echo '<p class="text-red-500 font-medium text-lg text-center">Invalid Email or Password</p>';
+   } ?>
   </form>
  </div>
+ <?php include_once("includes/scripts.php") ?>
+ <script>
+  <?php if (isset($login_status) && $login_status === true) {
+   echo 'swal.fire({
+    position: "center",
+    title: "Successfully Logged In",
+    icon: "success",
+    showConfirmButton: false,
+    timer: 1500
+   })
+   setTimeout(() => {
+    window.location.href = "/php-todo-app";
+   }, 1200)
+   ';
+  } ?>
+ </script>
 </body>
 
 </html>

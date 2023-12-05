@@ -1,13 +1,23 @@
 <?php
+// if already logged in send user to home page
+session_start();
+if (isset($_SESSION['user_id'])) {
+ header("Location: index.php");
+ exit();
+}
+
 include("Class/function.php");
 $todo_app = new TodoApp();
 if (isset($_POST['sign_up'])) {
  $email = $_POST['user_email'];
  $exist = $todo_app->is_exist($email);
- // echo "<pre>";
- // echo ($exist);
- // echo "</pre>";
+ if ($exist !== true) {
+  $signup_status = $todo_app->signup($_POST);
+ }
 }
+// echo "<pre>";
+// echo "Account Created Successfully";
+// echo "</pre>";
 ?>
 
 <!DOCTYPE html>
@@ -44,13 +54,13 @@ if (isset($_POST['sign_up'])) {
    <!-- Password -->
    <div class="flex flex-col gap-2 w-full">
     <label class="text-lg font-semibold text-blue-400">Password</label>
-    <input type="text" name="Password" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Enter Password" required>
+    <input type="password" name="password" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Enter Password" required>
    </div>
 
    <!-- confirm Password -->
    <div class="flex flex-col gap-2 w-full">
     <label class="text-lg font-semibold text-blue-400">Confirm Password</label>
-    <input type="text" name="c_Password" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Confirm Password" required>
+    <input type="password" name="c_password" class="py-2 px-3 bg-gray-50 rounded outline-blue-500 border-2 border-blue-200 text-blue-400 font-semibold text-[1.2rem]" placeholder="Confirm Password" required>
    </div>
 
    <!-- sign up button -->
@@ -59,16 +69,14 @@ if (isset($_POST['sign_up'])) {
    <!-- show user exist status -->
    <?php if (isset($exist) && $exist === true) {
     echo '<p class="text-red-500 font-medium text-lg text-center">User Already Exist! </p>';
-   } elseif (isset($exist) && $exist !== true) {
-    echo '<p class="text-green-500 font-medium text-lg text-center">No User Found With This Email</p>';
-   }   ?>
+   } ?>
   </form>
  </div>
  <?php include_once("includes/scripts.php") ?>
  <script>
   document.getElementById('signupForm').addEventListener('submit', function(event) {
-   const password = this.elements['Password'].value;
-   const c_password = this.elements['c_Password'].value;
+   const password = this.elements['password'].value;
+   const c_password = this.elements['c_password'].value;
 
    if (password !== c_password) {
     swal("Password Not Matched!", "Please recheck your password", "warning");
@@ -78,6 +86,20 @@ if (isset($_POST['sign_up'])) {
     document.getElementsByName('sign_up')[0].click();
    }
   });
+
+
+  <?php if (isset($signup_status) && $signup_status == true) {
+   echo 'swal.fire({
+    title: "Account Created Successfully",
+    icon: "success",
+    confirmButtonColor: "#3B82F6",
+    confirmButtonText: "Login Now"
+   }).then((result) => {
+    if (result.isConfirmed) {
+     window.location.href = "/php-todo-app/login.php";
+    }
+   })';
+  } ?>
  </script>
 
 </body>
