@@ -64,20 +64,21 @@ class TodoApp
   $password = $data['password'];
 
   // prepared statement
-  $query = "SELECT user_id, user_email, password FROM users WHERE user_email=?";
+  $query = "SELECT user_id, user_full_name, user_email, password FROM users WHERE user_email=?";
   // method to prepare the statement
   $stmt = mysqli_prepare($this->connection, $query);
   mysqli_stmt_bind_param($stmt, "s", $user_email);
   mysqli_stmt_execute($stmt);
 
   // bind the result variables
-  mysqli_stmt_bind_result($stmt, $user_id, $db_user_email, $hashedPassword);
+  mysqli_stmt_bind_result($stmt, $user_id, $db_user_name, $db_user_email, $hashedPassword);
   // fetch result
   mysqli_stmt_fetch($stmt);
   $verification_status = password_verify($password, $hashedPassword);
 
   if ($db_user_email && $verification_status) {
    $_SESSION['user_id'] = $user_id;
+   $_SESSION['user_name'] = $db_user_name;
    return true;
   } else {
    return false;
@@ -95,5 +96,56 @@ class TodoApp
 
   echo json_encode(["message" => "Logout successful"]);
   exit();
+ }
+
+ // get todos by user id
+ public function get_todo($user_id)
+ {
+  $query = "SELECT * FROM todos WHERE user_id=?";
+  // prepare statement and bind the result
+  $stmt = mysqli_prepare($this->connection, $query);
+  mysqli_stmt_bind_param($stmt, "i", $user_id);
+  mysqli_stmt_execute($stmt);
+
+  $result_set = mysqli_stmt_get_result($stmt);
+  mysqli_stmt_fetch($stmt);
+
+  $result = mysqli_fetch_all($result_set, MYSQLI_ASSOC);
+
+  if (isset($result)) {
+   return $result;
+  } else {
+   return false;
+  }
+ }
+
+ // update todo
+ public function update_todo($data)
+ {
+  $todoId = $data['todo_id'];
+  $updatedContent = $data['updated_content'];
+  $selectedStatus = $data['selected_status'];
+
+  $query = "UPDATE todos SET todo='$updatedContent', status=$selectedStatus WHERE todo_id=$todoId ";
+
+  $result = mysqli_query($this->connection, $query);
+  if ($result) {
+   return true;
+  } else {
+   return false;
+  }
+ }
+ // delete todo
+ public function delete_todo($todo_id)
+ {
+
+  $query = "DELETE FROM todos WHERE todo_id=$todo_id ";
+
+  $result = mysqli_query($this->connection, $query);
+  if ($result) {
+   return true;
+  } else {
+   return false;
+  }
  }
 }

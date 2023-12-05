@@ -36,7 +36,7 @@ if (isset($_POST['sign_up'])) {
  <?php
  include_once("includes/_navbar.php");
  ?>
- <div class="w-full h-[90vh] flex justify-center items-center flex-col">
+ <div class="w-full min-h-[90vh] flex justify-center items-center flex-col">
   <form action="" method="POST" class="space-y-6 min-w-[450px] p-10 rounded shadow-2xl" id="signupForm">
    <h1 class="text-4xl text-center py-3">Create An Account</h1>
    <!-- full name -->

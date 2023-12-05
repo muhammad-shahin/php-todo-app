@@ -1,31 +1,93 @@
 <script src="assets/js/sweetalart.js"></script>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"> </script>
 <script>
- document.getElementById("logoutBtn").addEventListener("click", function() {
-  console.log("logout clicked");
+  document.getElementById("logoutBtn").addEventListener("click", function() {
+    console.log("logout clicked");
 
-  // Make an asynchronous request to logout.php using fetch
-  fetch("logout.php")
-   .then(response => {
-    if (!response.ok) {
-     throw new Error('Network response was not ok');
-    }
-    return response.json();
-   })
-   .then(data => {
-    console.log(data);
-    swal.fire({
-     position: "center",
-     title: "Successfully Logged Out",
-     icon: "success",
-     showConfirmButton: false,
-     timer: 1500
-    })
-    setTimeout(() => {
-     window.location.href = "/php-todo-app/login.php";
-    }, 1200)
-   })
-   .catch(error => {
-    console.error("Error during logout:", error);
-   });
- });
+    // Make an asynchronous request to logout.php using fetch
+    fetch("logout.php")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        window.location.href = "/php-todo-app/login.php";
+        swal.fire({
+          position: "center",
+          title: "Successfully Logged Out",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+      .catch(error => {
+        console.error("Error during logout:", error);
+      });
+  });
+
+  // update todo
+  $(document).ready(function() {
+    $('.update-edit-btn').on('click', function() {
+      var todoId = $(this).data('todo-id');
+      var updatedContent = $('.editable-todo-' + todoId).text();
+      var selectedStatus = $('.selected-status-' + todoId).val();
+      // Ajax request to update todo
+      $.ajax({
+        type: 'POST',
+        url: 'update_todo.php',
+        data: {
+          todo_id: todoId,
+          updated_content: updatedContent,
+          selected_status: selectedStatus,
+        },
+        success: function(response) {
+          console.log('Update Status : ', response);
+          if (response) {
+            swal.fire({
+              position: "center",
+              title: "Successfully Update Last Edit",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
+        }
+      });
+    });
+  });
+
+  // delete todo
+  $(document).ready(function() {
+    $('.delete-todo-btn').on('click', function() {
+      var todoId = $(this).data('todo-id');
+      console.log(todoId);
+      // Ajax request to update todo
+      $.ajax({
+        type: 'POST',
+        url: 'delete_todo.php',
+        data: {
+          todo_id: todoId,
+        },
+        success: function(response) {
+          console.log('Delete Status : ', response);
+          if (response) {
+            swal.fire({
+              position: "center",
+              title: "Todo Removed From List",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500
+            }).then(function() {
+            // Reload the page to refresh the table
+            location.reload();
+          });
+          }
+        }
+      });
+    });
+  });
 </script>
